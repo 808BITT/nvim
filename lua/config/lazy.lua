@@ -46,4 +46,26 @@ require("mason-lspconfig").setup()
 -- Custom LSP settings here
 -- After setting up mason-lspconfig you may set up servers via lspconfig
 -- require("lspconfig").lua_ls.setup {}
+require("lspconfig").lua_ls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+	settings = {
+		Lua = {
+			runtime = {
+          			version = "LuaJIT",
+          			path = vim.split(package.path, ";"),
+        		},
+        		diagnostics = {
+          			globals = { "vim" },
+        		},
+        		workspace = {
+          			library = { vim.env.VIMRUNTIME },
+          			checkThirdParty = false,
+        		},
+        		telemetry = {
+          			enable = false,
+  			},
+		},
+	},
+})
 -- require("lspconfig").rust_analyzer.setup {}

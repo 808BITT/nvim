@@ -1,31 +1,14 @@
 return {
-	{
-		"hrsh7th/nvim-cmp",
-		setup = function()
-			local cmp = require('cmp')
-			cmp.setup {
-				dependencies = {
-					'hrsh7th/cmp-nvim-lsp',
-					'zbirenbaum/copilot.lua',
-					'zbirenbaum/copilot-cmp',
-				},
-				snippet = {
-					expand = function(args)
-						vim.fn['vsnip#anonymous'](args.body)
-					end,
-				},
-				mapping = {
-					['<Tab>'] = cmp.mapping.select_next_item(),
-    					['<S-Tab>'] = cmp.mapping.select_prev_item(),
-   					['<CR>'] = cmp.mapping.confirm({ select = true }),  -- Accept selected item
-				},
-				sources = {
-					{ name = 'copilot' },
-					{ name = 'nvim_lsp' },
-					{ name = 'vsnip' },
-					{ name = 'buffer' },
-				},
-			}
-		end,
+	"hrsh7th/nvim-cmp",
+	dependencies = {
+		'hrsh7th/cmp-nvim-lsp',
+            	'hrsh7th/cmp-buffer',
+            	'hrsh7th/cmp-path',
+            	'hrsh7th/cmp-cmdline',
+            	'L3MON4D3/LuaSnip',
+            	'saadparwaiz1/cmp_luasnip',
 	},
+	config = function()
+		require('config.cmp').setup()
+	end,
 }

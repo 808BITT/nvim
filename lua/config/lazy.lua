@@ -41,12 +41,23 @@ require("neoconf").setup({
 
 -- Setup Mason
 require("mason").setup()
-require("mason-lspconfig").setup()
+require("mason-lspconfig").setup({
+	ensure_installed = {
+		"lua_ls",
+		"gopls",
+		"rust_analyzer",
+		"pyright",
+		"ts_ls",
+		"bashls",
+		"jsonls",
+	},
+})
 
 -- Custom LSP settings here
 -- After setting up mason-lspconfig you may set up servers via lspconfig
--- require("lspconfig").lua_ls.setup {}
-require("lspconfig").lua_ls.setup({
+--
+local lspconfig = require("lspconfig")
+lspconfig.lua_ls.setup({
 	on_attach = on_attach,
 	capabilities = capabilities,
 	settings = {
@@ -69,3 +80,27 @@ require("lspconfig").lua_ls.setup({
 	},
 })
 -- require("lspconfig").rust_analyzer.setup {}
+lspconfig.gopls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+lspconfig.rust_analyzer.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+lspconfig.pyright.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+lspconfig.ts_ls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+lspconfig.bashls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+lspconfig.jsonls.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})

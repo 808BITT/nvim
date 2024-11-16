@@ -5,8 +5,19 @@ local telescope = require("telescope.builtin")
 
 
 -- MAPPINGS
+-- No Leader
+map("n", "<tab>", "<cmd>bn<cr>", { desc = "Next Buffer" })
+map("n", "<s-tab>", "<cmd>bp<cr>", { desc = "Previous Buffer" })
+map("n", "<c-s>", "<cmd>w<cr>", { desc = "Save" })
+map("n", "<c-q>", "<cmd>q<cr>", { desc = "Quit" })
+map("n", "<c-w>", "<cmd>bd<cr>", { desc = "Close Buffer" })
+map("n", "<c-f>", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
+map("n", "<c-g>", "<cmd>Telescope live_grep<cr>", { desc = "Git" })
+
 -- [*] leader key
 map("n", "<leader>", "<nop>", { desc = "Leader" })
+map("n", "<leader><space>", "<cmd>noh<cr>", { desc = "Clear Highlights" })
+map("n", "<leader>;", "<cmd>Telescope commands<cr>", { desc = "Commands" })
 
 -- [*A] actions
 map("n", "<leader>a", "<nop>", { desc = "Actions" })
@@ -14,10 +25,10 @@ map("n", "<leader>aa", "<cmd>Telescope lsp_code_actions<cr>", { desc = "Code Act
 
 -- [*B] buffer
 map("n", "<leader>b", "<nop>", { desc = "Buffer" })
-map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete" })
-map("n", "<leader>bn", "<cmd>bn<cr>", { desc = "Next" })
-map("n", "<leader>bp", "<cmd>bp<cr>", { desc = "Previous" })
-map("n", "<leader>bs", "<cmd>Telescope buffers<cr>", { desc = "Switch" })
+map("n", "<leader>bb", "<cmd>Telescope buffers<cr>", { desc = "Show Buffers" })
+map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
+map("n", "<leader>bn", "<cmd>bn<cr>", { desc = "Next Buffer" })
+map("n", "<leader>bp", "<cmd>bp<cr>", { desc = "Prev Buffer" })
 
 -- [*C] copilot
 map("i", "<c-\\>", "<cmd>Copilot suggestion accept<cr>", { desc = "Accept Suggestion" })
@@ -34,9 +45,19 @@ map("n", "<leader>e", "<nop>", { desc = "Edit" })
 map("n", "<leader>ev", "<cmd>edit $MYVIMRC<cr>", { desc = "Vimrc" })
 map("n", "<leader>em", "<cmd>edit $MYLUA/keybindings.lua<cr>", { desc = "Keybindings" })
 
--- [*F] file
-map("n", "<leader>f", "<nop>", { desc = "File" })
-map("n", "<leader>fs", "<cmd>write<cr>", { desc = "Save" })
+-- [*F] find
+map("n", "<leader>f", "<nop>", { desc = "Find" })
+map("n", "<leader>fa", telescope.autocommands, { desc = "Search AutoCommands"})
+map("n", "<leader>fb", "<cmd>Telescope file_browser<cr>", { desc = "File Browser" })
+map("n", "<leader>fc", telescope.commands, { desc = "Search Commands"})
+map("n", "<leader>fd", telescope.live_grep, { desc = "Grep Current Directory" })
+map("n", "<leader>ff", telescope.find_files, { desc = "All Files" })
+map("n", "<leader>fg", telescope.git_files, { desc = "Git Files" })
+map("n", "<leader>fh", telescope.command_history, { desc = "Command History" })
+map("n", "<leader>fj", telescope.jumplist, { desc = "Search Jumps"})
+map("n", "<leader>fk", telescope.keymaps, { desc = "Search Keymaps"})
+map("n", "<leader>fm", telescope.marks, { desc = "Search Marks" })
+map("n", "<leader>fs", telescope.grep_string, { desc = "Search Cursor" })
 
 -- [*G] git
 map("n", "<leader>g", "<nop>", { desc = "Git" })
@@ -70,19 +91,9 @@ map("n", "<leader>qq", "<cmd>quitall<cr>", { desc = "Quit" })
 map("n", "<leader>qb", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 
 
--- [*S] search
-map("n", "<leader>s", "<nop>", { desc = "Search" })
-map("n", "<leader>sa", telescope.autocommands, { desc = "Commands"})
-map("n", "<leader>sc", telescope.commands, { desc = "Commands"})
-map("n", "<leader>sd", telescope.live_grep, { desc = "Directory" })
-map("n", "<leader>sf", telescope.find_files, { desc = "Files" })
-map("n", "<leader>sj", telescope.jumplist, { desc = "Jumps"})
-map("n", "<leader>sk", telescope.keymaps, { desc = "Keymaps"})
-map("n", "<leader>sg", telescope.git_files, { desc = "Git" })
-map("n", "<leader>sh", telescope.command_history, { desc = "History" })
-map("n", "<leader>sm", telescope.marks, { desc = "Marks" })
-map("n", "<leader>ss", telescope.grep_string, { desc = "String (Cursor)" })
-
+-- [*S] settings
+map("n", "<leader>s", "<nop>", { desc = "Settings" })
+map("n", "<leader>ss", "<cmd>lua require('config.telescope').search_nvim()<cr>", { desc = "Search Settings" })
 
 -- [*T] tabs
 map("n", "<leader>t", "<nop>", { desc = "Tabs" })
@@ -101,10 +112,17 @@ map("n", "<leader>zj", "]s", { desc = "Next error" })
 map("n", "<leader>zk", "[s", { desc = "Previous error" })
 map("n", "<leader>za", "zg", { desc = "Add word" })
 
-
-
-
--- QUALITY OF LIFE
+--  ███╗   ██╗ █████╗ ██╗   ██╗██╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
+--  ████╗  ██║██╔══██╗██║   ██║██║██╔════╝ ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
+--  ██╔██╗ ██║███████║██║   ██║██║██║  ███╗███████║   ██║   ██║██║   ██║██╔██╗ ██║
+--  ██║╚██╗██║██╔══██║╚██╗ ██╔╝██║██║   ██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
+--  ██║ ╚████║██║  ██║ ╚████╔╝ ██║╚██████╔╝██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
+--  ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+-- Remap for dealing with splits
+map("n", "<c-j>", "<c-w><c-j>")
+map("n", "<c-k>", "<c-w><c-k>")
+map("n", "<c-l>", "<c-w><c-l>")
+map("n", "<c-h>", "<c-w><c-h>")
 -- Remap for dealing with visual line wraps
 map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
 map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })

@@ -7,6 +7,7 @@ return {
             	'hrsh7th/cmp-cmdline',
             	'L3MON4D3/LuaSnip',
             	'saadparwaiz1/cmp_luasnip',
+		'onsails/lspkind-nvim',
 	},
 	config = function()
 		require('config.cmp').setup()

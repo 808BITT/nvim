@@ -3,9 +3,9 @@ return {
 	branch = "v3.x",
 	dependencies = {
 		"nvim-lua/plenary.nvim",
-		"nvim-tree/nvim-web-devicons", 
+		"nvim-tree/nvim-web-devicons",
 		"MunifTanjim/nui.nvim",
-		"3rd/image.nvim", 
+		"3rd/image.nvim",
 		{
 			's1n7ax/nvim-window-picker',
 			version = '2.*',
@@ -22,9 +22,6 @@ return {
 			})
 			end,
 		},
-	},
-	keys = {
-		{ "<leader>ft", "<cmd>Neotree toggle<cr>", desc = "File Tree" },
 	},
 	config = function()
 		require("neo-tree").setup()

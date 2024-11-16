@@ -2,7 +2,7 @@
 require("config.lazy")
 
 -- setup mason and lsp settings
-require("config.mason_lsp")
+require("config.lsp")
 
 -- setup mappings
-require("config.mappings")
+require("mappings")

@@ -42,51 +42,47 @@ function M.setup()
 				luasnip.lsp_expand(args.body)
 			end,
 		},
-		mapping = {
-			["<C-n>"] = cmp.mapping.select_next_item { behavior = cmp.SelectBehavior.Insert },
-			["<C-p>"] = cmp.mapping.select_prev_item { behavior = cmp.SelectBehavior.Insert },
-			["<C-y>"] = cmp.mapping(cmp.mapping.confirm {
-				behavior = cmp.ConfirmBehavior.Insert,
-				select = true,
-			}, { "i", "c" }),
-		},
 		completion = {
 		    completeopt = 'menu,menuone,noinsert',
 		},
 		sources = cmp.config.sources({
-			{ name = 'copilot' },
 			{ name = 'nvim_lsp' },
 			{ name = 'luasnip' },
+			{ name = 'copilot' },
 			{ name = 'path' },
-			{ name = 'buffer' },
-		}),
-		})
-
-		-- Setup for specific filetypes
-		cmp.setup.filetype('gitcommit', {
-		sources = cmp.config.sources({
-		    { name = 'cmp_git' },
-		}, {
-		    { name = 'buffer' },
-		}),
-		})
-
-		-- Setup for command-line mode
-		cmp.setup.cmdline('/', {
-		mapping = cmp.mapping.preset.cmdline(),
-		sources = {
-		    { name = 'buffer' },
-		},
-		})
-
-		cmp.setup.cmdline(':', {
-		mapping = cmp.mapping.preset.cmdline(),
-		sources = cmp.config.sources({
-		    { name = 'path' },
-		}, {
-		    { name = 'cmdline' },
+			{ name = 'buffer', keyword_length = 3 },
+            { name = 'emoji' },
 		}),
 	})
+
+    -- special binding for command line
+    cmp.setup.cmdline(':', {
+        mapping = cmp.mapping({
+            ['<tab>'] = cmp.mapping(function(fallback)
+                if cmp.visible() then 
+                    cmp.confirm({
+                        select = true,
+                        behavior = cmp.ConfirmBehavior.Replace,
+                    })
+                else
+                    fallback()
+                end 
+            end, { 'c' }) }),
+        sources = cmp.config.sources({
+            { name = 'path' },
+        }, {
+            { name = 'cmdline' },
+        }),
+    })
+
+    -- Setup for specific filetypes
+    cmp.setup.filetype('gitcommit', {
+        sources = cmp.config.sources({
+            { name = 'cmp_git' },
+        }, {
+            { name = 'buffer' },
+        }),
+    })
 end
 
 return M

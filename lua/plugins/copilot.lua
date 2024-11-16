@@ -6,8 +6,8 @@ return {
 	enabled = true,
 	opts = {
 		suggestion = {
-			enabled = true,
-			auto_trigger = true,
+			enabled = false,
+			auto_trigger = false,
 		},
   		panel = { enabled = false },
 	},

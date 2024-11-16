@@ -9,7 +9,8 @@ return {
             	'saadparwaiz1/cmp_luasnip',
 		'onsails/lspkind-nvim',
 	},
-	config = function()
+	event = {"InsertEnter", "CmdlineEnter"},
+    config = function()
 		require('config.cmp').setup()
 	end,
 }

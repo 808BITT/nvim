@@ -3,7 +3,7 @@ vim.cmd([[ set nofoldenable]])
 local o = vim.o
 local g = vim.g
 
-o.cmdheight = 0
+o.cmdheight = 1
 o.number = true
 o.relativenumber = true
 o.lazyredraw = true

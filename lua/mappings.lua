@@ -1,48 +1,103 @@
 local luasnip = require("luasnip")
 local cmp = require("cmp")
 local vim = vim
+
+
 cmp.setup {
     mapping = {
-        ['<S-CR>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                if luasnip.expandable() then
-                    luasnip.expand()
-                else
-                    cmp.confirm({
-                        select = true,
-                    })
-                end
-            else
-                fallback()
-            end
-        end),
-        ['<esc>'] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.close()
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
-        ["<Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_next_item()
-            elseif luasnip.locally_jumpable(1) then
-                luasnip.jump(1)
-            else
-                fallback()
-            end
-        end, { "i", "s"}),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            elseif luasnip.locally_jumpable(-1) then
-                luasnip.jump(-1)
-            else
-                fallback()
-            end
-        end, { "i", "s"}),
+        ['<Up>'] = cmp.mapping.select_prev_item(),
+        ['<Down>'] = cmp.mapping.select_next_item(),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() and cmp.get_selected_entry() then
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+        local entry = cmp.get_selected_entry()
+        if entry and entry.completion_item and entry.completion_item.kind == 3 then
+          -- Insert parentheses and move cursor inside
+          vim.api.nvim_feedkeys('()', 'i', true)
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Left>', true, true, true), 'n', true)
+        end
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
     },
 }
+
+-- special binding for command line
+cmp.setup.cmdline(':', {
+  mapping = {
+    ['<Up>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { 'c' }),
+    ['<Down>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { 'c' }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ select = true })
+      else
+        fallback()
+      end
+    end, { 'c' }),
+  },
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    { name = 'cmdline' },
+  }),
+})
+
+-- special binding for command line
+cmp.setup.cmdline('/', {
+  mapping = {
+    ['<Up>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { 'c' }),
+    ['<Down>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { 'c' }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ select = true })
+      else
+        fallback()
+      end
+    end, { 'c' }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp_document_symbol' },
+  }, {
+    { name = 'buffer' },
+  }),
+})
+
+
+
 
 local map = vim.keymap.set
 -- map(mode, keys, command, { desc = string })
@@ -63,6 +118,10 @@ map("n", "<c-h>", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
 map("n", "<leader>", "<nop>", { desc = "Leader" })
 map("n", "<leader><space>", "<cmd>noh<cr>", { desc = "Clear Highlights" })
 map("n", "<leader>;", "<cmd>Telescope commands<cr>", { desc = "Commands" })
+map("n", "<leader><tab>", "<cmd>Neotree toggle<cr>", { desc = "File Browser" })
+map("n", "<leader>.", "<cmd>Telescope file_browser<cr>", { desc = "File Browser" })
+map("n", "<leader>?", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
+map("n", "<leader><esc>", "<cmd>Alpha<cr>", { desc = "Alpha" })
 
 -- [*A] actions
 map("n", "<leader>a", "<nop>", { desc = "Actions" })
@@ -93,7 +152,6 @@ map("n", "<leader>f", "<nop>", { desc = "Find" })
 map("n", "<leader>fa", telescope.autocommands, { desc = "Search AutoCommands"})
 map("n", "<leader>fc", telescope.commands, { desc = "Search Commands"})
 map("n", "<leader>fd", telescope.live_grep, { desc = "Grep Current Directory" })
-map("n", "<leader>ff", "<cmd>Neotree toggle<cr>", { desc = "File Browser" })
 map("n", "<leader>fg", telescope.git_files, { desc = "Git Files" })
 map("n", "<leader>fh", telescope.command_history, { desc = "Command History" })
 map("n", "<leader>fj", telescope.jumplist, { desc = "Search Jumps"})

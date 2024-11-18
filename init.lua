@@ -12,3 +12,5 @@ require("autocommands")
 
 -- setup mappings
 require("mappings")
+
+vim.cmd [[colorscheme moonfly]]

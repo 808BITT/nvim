@@ -2,7 +2,7 @@
 local M = {}
 
 function M.setup()
-	vim.opt.completeopt = { "menu", "menuone", "noselect" }
+	-- vim.opt.completeopt = { "menu", "menuone", "noselect" }
 	vim.opt.shortmess:append "c"
 
 	local lspkind = require "lspkind"
@@ -28,7 +28,7 @@ function M.setup()
 			luasnip = "[snip]",
 		},
 	}
-
+    
 
 	local cmp = require('cmp')
 	local luasnip = require('luasnip')
@@ -47,6 +47,7 @@ function M.setup()
 		},
 		sources = cmp.config.sources({
 			{ name = 'nvim_lsp' },
+            { name = 'nvim_lsp_document_symbol' },
 			{ name = 'luasnip' },
 			{ name = 'copilot' },
 			{ name = 'path' },
@@ -55,23 +56,11 @@ function M.setup()
 		}),
 	})
 
-    -- special binding for command line
-    cmp.setup.cmdline(':', {
-        mapping = cmp.mapping({
-            ['<tab>'] = cmp.mapping(function(fallback)
-                if cmp.visible() then 
-                    cmp.confirm({
-                        select = true,
-                        behavior = cmp.ConfirmBehavior.Replace,
-                    })
-                else
-                    fallback()
-                end 
-            end, { 'c' }) }),
+    cmp.setup.cmdline('/', {
         sources = cmp.config.sources({
-            { name = 'path' },
+            { name = 'nvim_lsp_document_symbol' },
         }, {
-            { name = 'cmdline' },
+            { name = 'buffer' },
         }),
     })
 
@@ -83,7 +72,7 @@ function M.setup()
             { name = 'buffer' },
         }),
     })
-end
+    end
 
 return M
 

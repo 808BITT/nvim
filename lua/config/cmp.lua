@@ -51,7 +51,7 @@ function M.setup()
 			{ name = 'luasnip' },
 			{ name = 'copilot' },
 			{ name = 'path' },
-			{ name = 'buffer', keyword_length = 3 },
+			{ name = 'buffer', keyword_length = 2 },
             { name = 'emoji' },
 		}),
 	})

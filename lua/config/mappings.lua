@@ -1,114 +1,95 @@
+-- COMPLETION
+-- ins = type and <tab> to cycle options, <cr> selects the highlighted option
+-- ':' = type and <tab> to select, <cr> is left to execute the command
+-- both modes use <esc> to close the completion menu
 local luasnip = require("luasnip")
 local cmp = require("cmp")
-local vim = vim
-
-
 cmp.setup {
     mapping = {
-        ['<Up>'] = cmp.mapping.select_prev_item(),
-        ['<Down>'] = cmp.mapping.select_next_item(),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() and cmp.get_selected_entry() then
-        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
-        local entry = cmp.get_selected_entry()
-        if entry and entry.completion_item and entry.completion_item.kind == 3 then
-          -- Insert parentheses and move cursor inside
-          vim.api.nvim_feedkeys('()', 'i', true)
-          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Left>', true, true, true), 'n', true)
-        end
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
+        ['<CR>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                if luasnip.expandable() then
+                    luasnip.expand()
+                else
+                    cmp.confirm({
+                        select = true,
+                    })
+                end
+            else
+                fallback()
+            end
+        end),
+        ['<esc>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.close()
+            else
+                fallback()
+            end
+        end, { "i", "s" }),
+        ["<Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_next_item()
+            elseif luasnip.locally_jumpable(1) then
+                luasnip.jump(1)
+            else
+                fallback()
+            end
+        end, { "i", "s"}),
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
+            if cmp.visible() then
+                cmp.select_prev_item()
+            elseif luasnip.locally_jumpable(-1) then
+                luasnip.jump(-1)
+            else
+                fallback()
+            end
+        end, { "i", "s"}),
     },
 }
-
--- special binding for command line
 cmp.setup.cmdline(':', {
-  mapping = {
-    ['<Up>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        fallback()
-      end
-    end, { 'c' }),
-    ['<Down>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        fallback()
-      end
-    end, { 'c' }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.confirm({ select = true })
-      else
-        fallback()
-      end
-    end, { 'c' }),
-  },
-  sources = cmp.config.sources({
-    { name = 'path' },
-  }, {
-    { name = 'cmdline' },
-  }),
-})
-
--- special binding for command line
-cmp.setup.cmdline('/', {
-  mapping = {
-    ['<Up>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      else
-        fallback()
-      end
-    end, { 'c' }),
-    ['<Down>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      else
-        fallback()
-      end
-    end, { 'c' }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.confirm({ select = true })
-      else
-        fallback()
-      end
-    end, { 'c' }),
-  },
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp_document_symbol' },
-  }, {
-    { name = 'buffer' },
-  }),
+    mapping = cmp.mapping({
+        ['<tab>'] = cmp.mapping(function(fallback)
+            if cmp.visible() then 
+                cmp.confirm({
+                    select = true,
+                    behavior = cmp.ConfirmBehavior.Replace,
+                })
+            else
+                fallback()
+            end 
+        end, { 'c' }) }),
+    sources = cmp.config.sources({
+        { name = 'path' },
+    }, {
+        { name = 'cmdline' },
+    }),
 })
 
 
-
+--  ███╗   ███╗ █████╗ ██████╗ ██████╗ ██╗███╗   ██╗ ██████╗ ███████╗
+--  ████╗ ████║██╔══██╗██╔══██╗██╔══██╗██║████╗  ██║██╔════╝ ██╔════╝
+--  ██╔████╔██║███████║██████╔╝██████╔╝██║██╔██╗ ██║██║  ███╗███████╗
+--  ██║╚██╔╝██║██╔══██║██╔═══╝ ██╔═══╝ ██║██║╚██╗██║██║   ██║╚════██║
+--  ██║ ╚═╝ ██║██║  ██║██║     ██║     ██║██║ ╚████║╚██████╔╝███████║
+--  ╚═╝     ╚═╝╚═╝  ╚═╝╚═╝     ╚═╝     ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝
+-- https://patorjk.com/software/taag/#p=display&c=bash&f=ANSI%20Shadow&t=mappings%0A
 
 local map = vim.keymap.set
--- map(mode, keys, command, { desc = string })
+-- Usage: map(mode, keys, command, { desc = string })
+-- special binding for command line
 
--- MAPPINGS
-map("i", "jj", "<esc>", { desc = "Escape" })
-map("i", "<c-s>", "<esc><cmd>w<cr>", { desc = "Escape" })
+-- Insert Mode
+map("i", "jj", "<esc>", { desc = "Normal Mode" })
+map("i", "<c-s>", "<esc><cmd>w<cr>i", { desc = "Save Buffer" })
+map("i", "<m-e>", "if err != nil {<cr>}<esc>O", { desc = "Go Error Check" })
+
+
+-- [] No Leader 
+map("n", "<c-s>", "<esc><cmd>w<cr>", { desc = "Save Buffer" })
 map("n", "<tab>", "<cmd>bn<cr>", { desc = "Next Buffer" })
 map("n", "<s-tab>", "<cmd>bp<cr>", { desc = "Previous Buffer" })
-map("n", "<c-s>", "<cmd>w<cr>", { desc = "Save" })
 map("n", "<c-q>", "<cmd>q<cr>", { desc = "Quit" })
+map("n", "<c-Q>", "<cmd>qall!<cr>", { desc = "Quit All" })
 map("n", "<c-f>", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
 map("n", "<c-g>", "<cmd>Neogit<cr>", { desc = "Git" })
 map("n", "<c-h>", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
@@ -134,9 +115,7 @@ map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
 map("n", "<leader>bn", "<cmd>bn<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bp", "<cmd>bp<cr>", { desc = "Prev Buffer" })
 
--- [*C] copilot
-map("i", "<c-\\>", "<cmd>Copilot suggestion accept<cr>", { desc = "Accept Suggestion" })
---map("i", "<tab>", "<cmd>Copilot suggestion accept<cr>", { desc = "Accept Suggestion" })
+-- [*C] code
 
 -- [*D] debug
 map("n", "<leader>d", "<nop>", { desc = "Debug" })
@@ -150,6 +129,7 @@ map("n", "<leader>dd", "<cmd>lua require('dap').step_over()<cr>", { desc = "Step
 local telescope = require("telescope.builtin")
 map("n", "<leader>f", "<nop>", { desc = "Find" })
 map("n", "<leader>fa", telescope.autocommands, { desc = "Search AutoCommands"})
+map("n", "<leader>fb", "<cmd>Neotree toggle<cr>", { desc = "File Browser" })
 map("n", "<leader>fc", telescope.commands, { desc = "Search Commands"})
 map("n", "<leader>fd", telescope.live_grep, { desc = "Grep Current Directory" })
 map("n", "<leader>fg", telescope.git_files, { desc = "Git Files" })
@@ -182,17 +162,29 @@ map("n", "<leader>jr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "Refere
 
 -- [*K] keep
 
--- [*L] 
--- [*M] make
--- [*N] notes
+-- [*L] lazy 
+map("n", "<leader>l", "<nop>", { desc = "Lazy" })
+map("n", "<leader>ls", "<cmd>edit ~/.config/nvim/lua/config/lazy.lua<cr>", { desc = "Edit Lazy Settings" })
+map("n", "<leader>lu", "<cmd>Lazy update<cr>", { desc = "Update" })
+map("n", "<leader>lx", "<cmd>Lazy clean<cr>", { desc = "Clean" })
+
+-- [*M] 
+
+-- [*N]
+
+-- [*O] open (possibly obsidian if i can figure out integration later..?)
+
+-- [*P] project
+
 -- [*Q] quit
 map("n", "<leader>q", "<nop>", { desc = "Quit/Close" })
 map("n", "<leader>qq", "<cmd>quitall<cr>", { desc = "Quit" })
 map("n", "<leader>qb", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 
+-- [*R] 
+
 -- [*S] settings
 map("n", "<leader>s", "<nop>", { desc = "Settings" })	
-map("n", "<leader>sl", "<cmd>edit ~/.config/nvim/lua/config/lazy.lua<cr>", { desc = "Lazy Settings" })
 map("n", "<leader>sc", "<cmd>edit ~/.config/nvim/lua/config/cmp.lua<cr>", { desc = "Edit Completion Settings" })
 map("n", "<leader>ss", "<cmd>edit ~/.config/nvim/lua/settings.lua<cr>", { desc = "Edit Vimrc Settings" })
 map("n", "<leader>sm", "<cmd>edit ~/.config/nvim/lua/mappings.lua<cr>", { desc = "Edit Mappings" })
@@ -206,7 +198,17 @@ map("n", "<leader>tn", "<cmd>tabnext<cr>", { desc = "Next" })
 map("n", "<leader>tB", "<cmd>-tabmove<cr>", { desc = "Move Left" })
 map("n", "<leader>tN", "<cmd>+tabmove<cr>", { desc = "Move Right" })
 
--- [Z] spelling
+-- [*U] 
+
+-- [*V]
+
+-- [*W] window
+
+-- [*X] 
+
+-- [*Y] 
+
+-- [*Z] spelling
 map("n", "<leader>z", "<nop>", { desc = "Spelling" })
 map("n", "<leader>zl", "<cmd>Telescope spell_suggest<cr>", { desc = "List corrections" })
 map("n", "<leader>zf", "1z=", { desc = "Use first correction" })
@@ -215,15 +217,14 @@ map("n", "<leader>zk", "[s", { desc = "Previous error" })
 map("n", "<leader>za", "zg", { desc = "Add word" })
 
 
-
-
-
 --  ███╗   ██╗ █████╗ ██╗   ██╗██╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗
 --  ████╗  ██║██╔══██╗██║   ██║██║██╔════╝ ██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║
 --  ██╔██╗ ██║███████║██║   ██║██║██║  ███╗███████║   ██║   ██║██║   ██║██╔██╗ ██║
 --  ██║╚██╗██║██╔══██║╚██╗ ██╔╝██║██║   ██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║
 --  ██║ ╚████║██║  ██║ ╚████╔╝ ██║╚██████╔╝██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║
 --  ╚═╝  ╚═══╝╚═╝  ╚═╝  ╚═══╝  ╚═╝ ╚═════╝ ╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝
+-- https://patorjk.com/software/taag/#p=display&c=bash&f=ANSI%20Shadow&t=Shell%0A
+
 -- Remap for dealing with splits
 map("n", "<c-j>", "<c-w><c-j>")
 map("n", "<c-k>", "<c-w><c-k>")

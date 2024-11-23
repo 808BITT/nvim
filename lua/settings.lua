@@ -3,10 +3,11 @@ vim.cmd([[ set nofoldenable]])
 local o = vim.o
 local g = vim.g
 
-o.cmdheight = 1
+o.autochdir = true
+o.cmdheight = 0
 o.number = true
 o.relativenumber = true
-o.lazyredraw = true
+o.lazyredraw = false
 o.wrap = true
 o.foldenable = false
 o.foldmethod = "expr"

@@ -8,9 +8,9 @@ require("config.lazy")
 require("config.lsp")
 
 -- setup autocommands
-require("autocommands")
+require("config.autocommands")
 
 -- setup mappings
-require("mappings")
+require("config.mappings")
 
 vim.cmd [[colorscheme moonfly]]

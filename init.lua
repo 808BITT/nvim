@@ -11,4 +11,10 @@ require("config.lsp")
 require("config.autocommands")
 
 -- setup mappings
+<<<<<<< HEAD
 require("config.mappings")
+=======
+require("mappings")
+
+vim.cmd [[colorscheme moonfly]]
+>>>>>>> main

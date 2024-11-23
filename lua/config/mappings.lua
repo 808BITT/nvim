@@ -4,6 +4,7 @@
 -- both modes use <esc> to close the completion menu
 local luasnip = require("luasnip")
 local cmp = require("cmp")
+<<<<<<< HEAD:lua/config/mappings.lua
 cmp.setup {
     mapping = {
         ['<CR>'] = cmp.mapping(function(fallback)
@@ -44,6 +45,37 @@ cmp.setup {
                 fallback()
             end
         end, { "i", "s"}),
+=======
+local vim = vim
+
+
+cmp.setup {
+    mapping = {
+        ['<Up>'] = cmp.mapping.select_prev_item(),
+        ['<Down>'] = cmp.mapping.select_next_item(),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() and cmp.get_selected_entry() then
+        cmp.confirm({ behavior = cmp.ConfirmBehavior.Replace, select = false })
+        local entry = cmp.get_selected_entry()
+        if entry and entry.completion_item and entry.completion_item.kind == 3 then
+          -- Insert parentheses and move cursor inside
+          vim.api.nvim_feedkeys('()', 'i', true)
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<Left>', true, true, true), 'n', true)
+        end
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+>>>>>>> main:lua/mappings.lua
     },
 }
 cmp.setup.cmdline(':', {
@@ -65,6 +97,7 @@ cmp.setup.cmdline(':', {
     }),
 })
 
+<<<<<<< HEAD:lua/config/mappings.lua
 
 --  ███╗   ███╗ █████╗ ██████╗ ██████╗ ██╗███╗   ██╗ ██████╗ ███████╗
 --  ████╗ ████║██╔══██╗██╔══██╗██╔══██╗██║████╗  ██║██╔════╝ ██╔════╝
@@ -75,6 +108,75 @@ cmp.setup.cmdline(':', {
 -- https://patorjk.com/software/taag/#p=display&c=bash&f=ANSI%20Shadow&t=mappings%0A
 
 -- Usage: map(mode, keys, command, { desc = string })
+=======
+-- special binding for command line
+cmp.setup.cmdline(':', {
+  mapping = {
+    ['<Up>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { 'c' }),
+    ['<Down>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { 'c' }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ select = true })
+      else
+        fallback()
+      end
+    end, { 'c' }),
+  },
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    { name = 'cmdline' },
+  }),
+})
+
+-- special binding for command line
+cmp.setup.cmdline('/', {
+  mapping = {
+    ['<Up>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      else
+        fallback()
+      end
+    end, { 'c' }),
+    ['<Down>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      else
+        fallback()
+      end
+    end, { 'c' }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.confirm({ select = true })
+      else
+        fallback()
+      end
+    end, { 'c' }),
+  },
+  sources = cmp.config.sources({
+    { name = 'nvim_lsp_document_symbol' },
+  }, {
+    { name = 'buffer' },
+  }),
+})
+
+
+
+
+>>>>>>> main:lua/mappings.lua
 local map = vim.keymap.set
 
 -- Insert Mode
@@ -98,6 +200,10 @@ map("n", "<c-h>", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
 map("n", "<leader>", "<nop>", { desc = "Leader" })
 map("n", "<leader><space>", "<cmd>noh<cr>", { desc = "Clear Highlights" })
 map("n", "<leader>;", "<cmd>Telescope commands<cr>", { desc = "Commands" })
+map("n", "<leader><tab>", "<cmd>Neotree toggle<cr>", { desc = "File Browser" })
+map("n", "<leader>.", "<cmd>Telescope file_browser<cr>", { desc = "File Browser" })
+map("n", "<leader>?", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
+map("n", "<leader><esc>", "<cmd>Alpha<cr>", { desc = "Alpha" })
 
 -- [*A] actions
 map("n", "<leader>a", "<nop>", { desc = "Actions" })

@@ -34,3 +34,5 @@ o.guifont = "JetBrainsMono Nerd Font:h24"
 
 g.mapleader = " "
 g.maplocalleader = " "
+
+

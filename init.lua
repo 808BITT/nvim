@@ -14,3 +14,8 @@ require("config.autocommands")
 require("config.mappings")
 
 vim.cmd [[colorscheme moonfly]]
+
+require("notify").setup({
+  background_colour = "#000000",
+})
+

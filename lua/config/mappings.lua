@@ -86,8 +86,7 @@ map("i", "<m-e>", "if err != nil {<cr>}<esc>O", { desc = "Go Error Check" })
 
 -- [] No Leader 
 map("n", "<c-s>", "<esc><cmd>w<cr>", { desc = "Save Buffer" })
-map("n", "<tab>", "<cmd>bn<cr>", { desc = "Next Buffer" })
-map("n", "<s-tab>", "<cmd>bp<cr>", { desc = "Previous Buffer" })
+map("n", "<tab>", "<cmd>Neotree toggle source=filesystem position=current reveal reveal_force_cwd<cr>", { desc = "File Browser" })
 map("n", "<c-q>", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<c-Q>", "<cmd>qall!<cr>", { desc = "Quit All" })
 map("n", "<c-f>", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
@@ -104,20 +103,17 @@ map("n", "<leader>.", "<cmd>Telescope file_browser<cr>", { desc = "File Browser"
 map("n", "<leader>?", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
 map("n", "<leader><esc>", "<cmd>Alpha<cr>", { desc = "Alpha" })
 
--- [*A] actions
-map("n", "<leader>a", "<nop>", { desc = "Actions" })
-map("n", "<leader>aa", "<cmd>Telescope lsp_code_actions<cr>", { desc = "Code Actions" })
+-- [*A] 
 
 -- [*B] buffer
 map("n", "<leader>b", "<nop>", { desc = "Buffer" })
 map("n", "<leader>bb", "<cmd>Telescope buffers<cr>", { desc = "Show Buffers" })
-map("n", "<leader>bd", "<cmd>bd<cr>", { desc = "Delete Buffer" })
-map("n", "<leader>bn", "<cmd>bn<cr>", { desc = "Next Buffer" })
-map("n", "<leader>bp", "<cmd>bp<cr>", { desc = "Prev Buffer" })
+map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
+map("n", "<leader>bn", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+map("n", "<leader>bp", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
 
--- [*C] code
+map("n", "<leader>cd", "<cmd>Telescope zoxide list<cr>", { desc = "Change Directory" })
 
--- [*D] debug
 map("n", "<leader>d", "<nop>", { desc = "Debug" })
 map("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle Breakpoint" })
 map("n", "<leader>dc", "<cmd>lua require('dap').continue()<cr>", { desc = "Continue" })
@@ -129,9 +125,10 @@ map("n", "<leader>dd", "<cmd>lua require('dap').step_over()<cr>", { desc = "Step
 local telescope = require("telescope.builtin")
 map("n", "<leader>f", "<nop>", { desc = "Find" })
 map("n", "<leader>fa", telescope.autocommands, { desc = "Search AutoCommands"})
-map("n", "<leader>fb", "<cmd>Neotree toggle<cr>", { desc = "File Browser" })
+map("n", "<leader>fb", telescope.buffers, { desc = "Search Buffers"})
 map("n", "<leader>fc", telescope.commands, { desc = "Search Commands"})
 map("n", "<leader>fd", telescope.live_grep, { desc = "Grep Current Directory" })
+map("n", "<leader>ff", "<cmd>Telescope find_files cwd=~/projects hidden=true theme=ivy<cr>", { desc = "Find Files" })
 map("n", "<leader>fg", telescope.git_files, { desc = "Git Files" })
 map("n", "<leader>fh", telescope.command_history, { desc = "Command History" })
 map("n", "<leader>fj", telescope.jumplist, { desc = "Search Jumps"})
@@ -139,11 +136,13 @@ map("n", "<leader>fk", telescope.keymaps, { desc = "Search Keymaps"})
 map("n", "<leader>fm", telescope.marks, { desc = "Search Marks" })
 map("n", "<leader>fs", telescope.grep_string, { desc = "Search Cursor" })
 
--- [*G] git
-map("n", "<leader>g", "<nop>", { desc = "Git" })
-map("n", "<leader>gs", "<cmd>Git<cr>", { desc = "Status" })
-map("n", "<leader>gc", "<cmd>Git commit<cr>", { desc = "Commit" })
-map("n", "<leader>gp", "<cmd>Git push<cr>", { desc = "Push" })
+-- [*G] go to
+map("n", "<leader>g", "<nop>", { desc = "Go To" })
+map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Definition" })
+map("n", "<leader>gb", "<C-o>", { desc = "Back" })
+map("n", "<leader>gn", "<C-i>", { desc = "Next" })
+map("n", "<leader>gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Implementation" })
+map("n", "<leader>gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "References" })
 
 -- [*H] help
 map("n", "<leader>h", "<nop>", { desc = "Help" })
@@ -152,15 +151,9 @@ map("n", "<leader>hd", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { desc = "Si
 
 -- [*I]
 
--- [*J] jump
-map("n", "<leader>j", "<nop>", { desc = "Jump" })
-map("n", "<leader>jd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Definition" })
-map("n", "<leader>jb", "<C-o>", { desc = "Back" })
-map("n", "<leader>jn", "<C-i>", { desc = "Next" })
-map("n", "<leader>ji", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Implementation" })
-map("n", "<leader>jr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "References" })
+-- [*J]
 
--- [*K] keep
+-- [*K]
 
 -- [*L] lazy 
 map("n", "<leader>l", "<nop>", { desc = "Lazy" })
@@ -172,9 +165,9 @@ map("n", "<leader>lx", "<cmd>Lazy clean<cr>", { desc = "Clean" })
 
 -- [*N]
 
--- [*O] open (possibly obsidian if i can figure out integration later..?)
+-- [*O]
 
--- [*P] project
+-- [*P]
 
 -- [*Q] quit
 map("n", "<leader>q", "<nop>", { desc = "Quit/Close" })
@@ -202,7 +195,7 @@ map("n", "<leader>tN", "<cmd>+tabmove<cr>", { desc = "Move Right" })
 
 -- [*V]
 
--- [*W] window
+-- [*W]
 
 -- [*X] 
 

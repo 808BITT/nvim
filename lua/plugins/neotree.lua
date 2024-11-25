@@ -38,7 +38,7 @@ return {
 			close_if_last_window = true,
 			sort_case_insensitive = true,
 			window = {
-                position = "bottom"
+                position = "current",
             },
 		})
 	end,

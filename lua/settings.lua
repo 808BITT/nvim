@@ -4,7 +4,7 @@ local o = vim.o
 local g = vim.g
 
 o.autochdir = true
-o.cmdheight = 0
+o.cmdheight = 1
 o.number = true
 o.relativenumber = true
 o.lazyredraw = false
@@ -34,5 +34,3 @@ o.guifont = "JetBrainsMono Nerd Font:h24"
 
 g.mapleader = " "
 g.maplocalleader = " "
-
-

@@ -5,17 +5,12 @@ require("settings")
 require("config.lazy")
 
 -- setup mason and lsp settings
-require("config.lsp")
+-- require("config.lsp")
 
 -- setup autocommands
-require("config.autocommands")
+-- require("config.autocommands")
 
 -- setup mappings
-require("config.mappings")
+-- require("config.mappings")
 
-vim.cmd [[colorscheme moonfly]]
-
-require("notify").setup({
-  background_colour = "#000000",
-})
-
+vim.cmd([[colorscheme moonfly]])

@@ -5,12 +5,13 @@ require("settings")
 require("config.lazy")
 
 -- setup mason and lsp settings
--- require("config.lsp")
+require("config.lsp")
 
 -- setup autocommands
--- require("config.autocommands")
+require("config.autocommands")
 
 -- setup mappings
--- require("config.mappings")
+require("config.mappings")
 
+-- set colorscheme to moonfly
 vim.cmd([[colorscheme moonfly]])

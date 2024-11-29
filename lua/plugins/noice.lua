@@ -1,12 +1,6 @@
 return {
     'folke/noice.nvim',
-    event = "VeryLazy",
-    opts = {},
-    dependencies = {
-        "MunifTanjim/nui.nvim",
-        "rcarriga/nvim-notify",
-    },
-    setup = function()
+    opts = function()
         require("noice").setup({
             lsp = {
                 -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
@@ -24,9 +18,6 @@ return {
                 inc_rename = true, -- enables an input dialog for inc-rename.nvim
                 lsp_doc_border = false, -- add a border to hover docs and signature help
             },
-        })
-        require("notify").setup({
-          background_colour = "#000000",
         })
     end,
 }

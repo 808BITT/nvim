@@ -1,6 +1,7 @@
 local telescope = require("telescope.builtin")
 local luasnip = require("luasnip")
 local cmp = require("cmp")
+local map = vim.keymap.set
 
 -- COMPLETION
 -- ins = type and <tab> to cycle options, <cr> selects the highlighted option
@@ -49,18 +50,18 @@ cmp.setup({
 	},
 })
 cmp.setup.cmdline(":", {
-	mapping = cmp.mapping({
-		["<tab>"] = cmp.mapping(function(fallback)
-			if cmp.visible() then
-				cmp.confirm({
-					select = true,
-					behavior = cmp.ConfirmBehavior.Replace,
-				})
-			else
-				fallback()
-			end
-		end, { "c" }),
-	}),
+	-- mapping = cmp.mapping({
+	-- 	["<tab>"] = cmp.mapping(function(fallback)
+	-- 		if cmp.visible() then
+	-- 			cmp.confirm({
+	-- 				select = true,
+	-- 				behavior = cmp.ConfirmBehavior.Replace,
+	-- 			})
+	-- 		else
+	-- 			fallback()
+	-- 		end
+	-- 	end, { "c" }),
+	-- }),
 	sources = cmp.config.sources({
 		{ name = "path" },
 	}, {
@@ -68,16 +69,25 @@ cmp.setup.cmdline(":", {
 	}),
 })
 
-local map = vim.keymap.set
+-- jj to go back to normal mode
 map("i", "jj", "<esc>", { desc = "Normal Mode" })
-map("i", "<c-s>", "<esc><cmd>w<cr>i", { desc = "Save Buffer" })
-map("i", "<m-e>", "if err != nil {<cr>}<esc>O", { desc = "Go Error Check" })
+
+-- control-s to save
+map("i", "<c-s>", "<esc><cmd>w<cr>a", { desc = "Save Buffer" })
 map("n", "<c-s>", "<esc><cmd>w<cr>", { desc = "Save Buffer" })
+
+-- go err check shortcut
+map("i", "<m-e>", "if err != nil {<cr>}<esc>O", { desc = "Go Error Check" })
+
+-- quit shortcut
 map("n", "<c-q>", "<cmd>q<cr>", { desc = "Quit" })
 map("n", "<c-Q>", "<cmd>qall!<cr>", { desc = "Quit All" })
+
+--
 map("n", "<c-f>", "<cmd>Telescope find_files<cr>", { desc = "Find Files" })
 map("n", "<c-g>", "<cmd>Neogit<cr>", { desc = "Git" })
 map("n", "<c-h>", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
+
 map("n", "<leader>", "<nop>", { desc = "Leader" })
 map("n", "<leader><space>", "<cmd>noh<cr>", { desc = "Clear Highlights" })
 map("n", "<leader>;", "<cmd>Telescope commands<cr>", { desc = "Commands" })
@@ -85,6 +95,7 @@ map("n", "<leader><tab>", "<cmd>Neotree toggle<cr>", { desc = "File Browser" })
 map("n", "<leader>.", "<cmd>Telescope file_browser<cr>", { desc = "File Browser" })
 map("n", "<leader>?", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
 map("n", "<leader><esc>", "<cmd>Alpha<cr>", { desc = "Alpha" })
+
 map("n", "<leader>b", "<nop>", { desc = "Buffer" })
 map("n", "<leader>bb", "<cmd>Telescope buffers<cr>", { desc = "Show Buffers" })
 map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
@@ -97,9 +108,10 @@ map("n", "<leader>dc", "<cmd>lua require('dap').continue()<cr>", { desc = "Conti
 map("n", "<leader>dd", "<cmd>lua require('dap').step_over()<cr>", { desc = "Step Over" })
 map("n", "<leader>f", "<nop>", { desc = "Find" })
 map("n", "<leader>fa", telescope.autocommands, { desc = "Search AutoCommands" })
-map("n", "<leader>fb", telescope.buffers, { desc = "Search Buffers" })
+--map("n", "<leader>fb", telescope.buffers, { desc = "Search Buffers" })
 map("n", "<leader>fc", telescope.commands, { desc = "Search Commands" })
 map("n", "<leader>fd", telescope.live_grep, { desc = "Grep Current Directory" })
+map("n", "<leader>fe", ":Telescope file_browser path=%:p:h select_buffer=true<CR>", { desc = "File Explorer" })
 map("n", "<leader>ff", "<cmd>Telescope find_files cwd=~/projects hidden=true theme=ivy<cr>", { desc = "Find Files" })
 map("n", "<leader>fg", telescope.git_files, { desc = "Git Files" })
 map("n", "<leader>fh", telescope.command_history, { desc = "Command History" })
@@ -150,21 +162,21 @@ map("n", "<leader>za", "zg", { desc = "Add word" })
 -- https://patorjk.com/software/taag/#p=display&c=bash&f=ANSI%20Shadow&t=Shell%0A
 
 -- Remap for dealing with splits
--- map("n", "<c-j>", "<c-w><c-j>")
--- map("n", "<c-k>", "<c-w><c-k>")
--- map("n", "<c-l>", "<c-w><c-l>")
--- map("n", "<c-h>", "<c-w><c-h>")
+map("n", "<c-j>", "<c-w><c-j>")
+map("n", "<c-k>", "<c-w><c-k>")
+map("n", "<c-l>", "<c-w><c-l>")
+map("n", "<c-h>", "<c-w><c-h>")
 
 -- Remap for dealing with visual line wraps
--- map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
--- map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
+map("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
+map("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 
 -- better indenting
--- map("v", "<", "<gv")
--- map("v", ">", ">gv")
--- map("n", "<", "<<")
--- map("n", ">", ">>")
+map("v", "<", "<gv")
+map("v", ">", ">gv")
+map("n", "<", "<<")
+map("n", ">", ">>")
 
 -- paste over currently selected text without yanking it
--- map("v", "p", '"_dp')
--- map("v", "P", '"_dP')
+map("v", "p", '"_dp')
+map("v", "P", '"_dP')

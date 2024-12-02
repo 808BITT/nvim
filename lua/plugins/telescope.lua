@@ -68,6 +68,9 @@ return {
 				},
 				repo = {
 					list = {
+						fd_opts = {
+							"--no-ignore-vcs",
+						},
 						search_dirs = {
 							"~/projects",
 						},
@@ -76,7 +79,7 @@ return {
 			},
 		})
 		require("telescope").load_extension("fzf")
-		require("telescope").load_extension("emoji")
+		-- require("telescope").load_extension("emoji") --- emoji.lua handles loading the extension
 		require("telescope").load_extension("zoxide")
 		require("telescope").load_extension("heading")
 		require("telescope").load_extension("file_browser")

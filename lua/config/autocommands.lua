@@ -11,24 +11,40 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		require("conform").format({ bufnr = args.buf })
 	end,
 })
+-- Place this in your Neovim configuration file (e.g., init.lua)
 
--- Define a list of buffer types to check
-local special_buffers = { "NeogitStatus", "neo-tree", "TelescopePrompt", "alpha" }
-vim.api.nvim_create_augroup("AutoCloseSpecialBuffers", { clear = true })
+-- Define a list of auxiliary buffer types to check
+local auxiliary_buffers = { "Neogit", "neo-tree", "Telescope", "alpha" }
+
+-- Create an autocommand group
+vim.api.nvim_create_augroup("AutoCloseAuxiliaryBuffers", { clear = true })
+
+-- Set up the autocommand
 vim.api.nvim_create_autocmd("BufEnter", {
-	group = "AutoCloseSpecialBuffers",
+	group = "AutoCloseAuxiliaryBuffers",
 	callback = function()
-		local buffers = vim.fn.getbufinfo({ buflisted = 1 })
-		local all_special = true
-		for _, buf in ipairs(buffers) do
-			local buf_ft = vim.api.nvim_buf_get_option(buf.bufnr, "filetype")
-			if not vim.tbl_contains(special_buffers, buf_ft) then
-				all_special = false
-				break
+		print("BufEnter")
+		-- Get the list of all listed (normal) buffers
+		local buffers = vim.fn.getbufinfo()
+
+		-- if length of buffers is >1, close first buffer if its name = ""
+		if #buffers > 1 then
+			if vim.api.nvim_buf_get_name(buffers[1].bufnr) == "" then
+				vim.cmd("bdelete " .. buffers[1].bufnr)
 			end
 		end
 
-		if all_special then
+		-- Check if all listed buffers are auxiliary buffers
+		local all_auxiliary = true
+		for _, buf in ipairs(buffers) do
+			local buf_ft = vim.api.nvim_buf_get_option(buf.bufnr, "filetype")
+			if not vim.tbl_contains(auxiliary_buffers, buf_ft) then
+				all_auxiliary = false
+				break
+			end
+		end
+		-- If all remaining buffers are auxiliary, quit Neovim
+		if all_auxiliary then
 			vim.cmd("qa")
 		end
 	end,

@@ -18,11 +18,14 @@ return {
 		}
 
 		dashboard.section.buttons.val = {
-			dashboard.button("e", "  > New file", ":ene <BAR> startinsert <CR>"),
-			dashboard.button("r", "  > Recent", ":Telescope oldfiles<CR>"),
-			dashboard.button("s", "  > Settings", ""),
+			dashboard.button("r", "󰥔  > Recent", ":Telescope oldfiles<CR>"),
+			dashboard.button("g", "󰊢  > NeoGit", ":Neogit<CR>"),
+			dashboard.button("k", "󰌌  > Keymaps", ":Telescope keymaps<CR>"),
+			dashboard.button("l", "󱐥  > Lazy Plugins", ":Lazy<cr>"),
 			dashboard.button("q", "󱎘  > Quit", ":qa<CR>"),
 		}
+
+		dashboard.section.footer.val = "I'll think of something cool to put here later."
 
 		alpha.setup(dashboard.opts)
 

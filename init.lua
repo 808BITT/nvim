@@ -14,4 +14,4 @@ require("config.autocommands")
 require("config.mappings")
 
 -- set colorscheme to moonfly
-vim.cmd([[colorscheme moonfly]])
+-- vim.cmd([[colorscheme moonfly]])

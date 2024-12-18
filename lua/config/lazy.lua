@@ -31,7 +31,7 @@ require("lazy").setup({
 		lazy = false,
 		version = false,
 	},
-	install = { colorscheme = { "habamax" } },
+	-- install = { colorscheme = { "habamax" } },
 	checker = { enabled = true },
 	ui = {
 		icons = {

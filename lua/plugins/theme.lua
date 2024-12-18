@@ -9,50 +9,32 @@ return {
 	config = function()
 		require("lualine").setup({
 			options = {
-				theme = "powerline",
+				-- theme = "iceberg_dark",
+				theme = "ayu_mirage",
 				section_separators = { left = "", right = "" },
 				component_separators = { left = "", right = "" },
 			},
 			winbar = {
-				lualine_a = {},
-				lualine_b = {},
-				lualine_c = { "filename" },
-				lualine_x = {},
-				lualine_y = {},
-				lualine_z = {},
-			},
-			inactive_winbar = {
-				lualine_a = {},
-				lualine_b = {},
-				lualine_c = { "filename" },
-				lualine_x = {},
-				lualine_y = {},
-				lualine_z = {},
-			},
-			tabline = {
 				lualine_a = { "buffers" },
 				lualine_b = {},
 				lualine_c = {},
 				lualine_x = {},
-				lualine_y = {},
-				lualine_z = { "tabs" },
+				lualine_y = { "os.date('%A, %b %d %Y %X')" },
+				lualine_z = {},
 			},
+			inactive_winbar = {},
+			tabline = {},
+			inactive_tabline = {},
 			sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff" },
-				lualine_c = { "filename" },
-				lualine_x = { "fileformat", "filetype" },
-				lualine_y = { "encoding", "location", "progress" },
-				lualine_z = { "os.date('%A, %b %d %Y %X')", "data", "require'lsp-status'.status()" },
-			},
-			inactive_sections = {
-				lualine_a = {},
-				lualine_b = {},
 				lualine_c = {},
-				lualine_x = {},
+				lualine_x = { "encoding", "fileformat", "filetype" },
+				-- lualine_y = { "location", "progress" },
 				lualine_y = {},
-				lualine_z = {},
+				lualine_z = { "tabs", "data", "require'lsp-status'.status()" },
 			},
+			inactive_sections = {},
 		})
 
 		require("onedark").setup({

@@ -26,16 +26,16 @@ return {
 				verify_commit = vim.fn.executable("gpg") == 1, -- Can be set to true or false, otherwise we try to find the binary
 			},
 			log_view = {
-				kind = "replace",
+				kind = "tab",
 			},
 			rebase_editor = {
-				kind = "replace",
+				kind = "auto",
 			},
 			reflog_view = {
-				kind = "replace",
+				kind = "tab",
 			},
 			merge_editor = {
-				kind = "replace",
+				kind = "auto",
 			},
 			description_editor = {
 				kind = "auto",
@@ -50,10 +50,10 @@ return {
 				kind = "split",
 			},
 			stash = {
-				kind = "auto",
+				kind = "tab",
 			},
 			refs_view = {
-				kind = "auto",
+				kind = "tab",
 			},
 			-- customize displayed signs
 			signs = {

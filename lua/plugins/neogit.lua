@@ -4,5 +4,21 @@ return {
 		"nvim-lua/plenary.nvim",
 		"sindrets/diffview.nvim",
 	},
-	config = true,
+	config = function()
+		require("neogit").setup({
+			kind = "replace",
+			graph_style = "unicode",
+			integrations = {
+				telescope = true,
+				diffview = true,
+			},
+			-- customize displayed signs
+			signs = {
+				-- { CLOSED, OPENED }
+				section = { "", "" },
+				item = { "", "" },
+				hunk = { "", "" },
+			},
+		})
+	end,
 }

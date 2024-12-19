@@ -11,13 +11,13 @@ return {
 			options = {
 				-- theme = "iceberg_dark",
 				theme = "ayu_mirage",
-				section_separators = { left = "", right = "" },
+				section_separators = { left = "", right = "" },
 				component_separators = { left = "", right = "" },
 			},
 			winbar = {
-				lualine_a = { "buffers" },
+				lualine_a = {},
 				lualine_b = {},
-				lualine_c = {},
+				lualine_c = { "buffers" },
 				lualine_x = {},
 				lualine_y = { "os.date('%A, %b %d %Y %X')" },
 				lualine_z = {},
@@ -28,11 +28,11 @@ return {
 			sections = {
 				lualine_a = { "mode" },
 				lualine_b = { "branch", "diff" },
-				lualine_c = {},
+				lualine_c = { "filename" },
 				lualine_x = { "encoding", "fileformat", "filetype" },
 				-- lualine_y = { "location", "progress" },
 				lualine_y = {},
-				lualine_z = { "tabs", "data", "require'lsp-status'.status()" },
+				lualine_z = { "tabs" },
 			},
 			inactive_sections = {},
 		})

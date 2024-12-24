@@ -1,5 +1,5 @@
 -- setup vim settings
-require("settings")
+require("config.settings")
 
 -- bootstrap lazy and load ../lua/plugins
 require("config.lazy")
@@ -8,10 +8,7 @@ require("config.lazy")
 require("config.lsp")
 
 -- setup autocommands
-require("config.autocommands")
+require("config.autocmds")
 
 -- setup mappings
-require("config.mappings")
-
--- set colorscheme to moonfly
--- vim.cmd([[colorscheme moonfly]])
+require("config.keymaps")

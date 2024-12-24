@@ -103,6 +103,9 @@ map("n", "<leader><tab>", "<cmd>Telescope buffers<cr>", { desc = "Show Buffers" 
 map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
 map("n", "<leader>bn", "<cmd>bnext<cr>", { desc = "Next Buffer" })
 map("n", "<leader>bp", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
+-- C
+map("n", "<leader>cpe", "<cmd>Copilot enable<cr>", { desc = "Enable Copilot" })
+map("n", "<leader>cpd", "<cmd>Copilot disable<cr>", { desc = "Disable Copilot" })
 -- D
 map("n", "<leader>d", "<nop>", { desc = "Debug" })
 map("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle Breakpoint" })
@@ -133,7 +136,7 @@ map("n", "<leader>qq", "<cmd>quitall<cr>", { desc = "Quit" })
 map("n", "<leader>qb", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 -- R
 map("n", "<leader>r", "<nop>", { desc = "Settings" })
-map("n", "<leader>rn", "<cmd>IncRename ", { desc = "Rename" })
+map("n", "<leader>rn", ":IncRename ", { desc = "Rename" })
 -- S
 map("n", "<leader>s", telescope.grep_string, { desc = "Search Under Cursor" })
 -- T

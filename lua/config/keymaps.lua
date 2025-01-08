@@ -3,10 +3,11 @@ local luasnip = require("luasnip")
 local cmp = require("cmp")
 local map = vim.keymap.set
 
--- COMPLETION
--- ins = type and <tab> to cycle options, <cr> selects the highlighted option
--- ':' = type and <tab> to select, <cr> is left to execute the command
--- both modes use <esc> to close the completion menu
+-- "Snippets"
+-- go: err check
+map("i", "<m-e>", "if err != nil {<cr>}<esc>O")
+
+-- COMPLETION MAPPINGS
 cmp.setup({
 	mapping = {
 		["<CR>"] = cmp.mapping(function(fallback)
@@ -69,87 +70,99 @@ cmp.setup.cmdline(":", {
 	}),
 })
 
--- jj to go back to normal mode (not sure i like the visual delay it causes when i type j and i dont really remember to use it)
--- map("i", "jj", "<esc>", { desc = "Normal Mode" })
+-- \ to open file browser
+map("n", "\\", "<cmd>Telescope file_browser<cr>", { desc = "File Browser" })
 
--- control-s to save
-map("i", "<c-s>", "<esc><cmd>w<cr>a", { desc = "Save Buffer" })
-map("n", "<c-s>", "<esc><cmd>w<cr>", { desc = "Save Buffer" })
+-- ctrl-s to save current buffer
+map({ "i", "n" }, "<c-s>", "<esc><cmd>w<cr>", { desc = "Save Buffer" })
 
--- go err check shortcut
-map("i", "<m-e>", "if err != nil {<cr>}<esc>O", { desc = "Go Error Check" })
-
--- quit shortcut
+-- ctrl-q to save and quit all buffers
 map("n", "<c-q>", "<cmd>wqa<cr>", { desc = "Save and Quit" })
-map("n", "<m-q>", "<cmd>qall!<cr>", { desc = "Quit All" })
 
---
-map("n", "<c-f>", telescope.git_files, { desc = "Git Files" })
+-- ctrl-f to find files in current git repo
+map({ "n", "i" }, "<c-f>", "<cmd>Telescope git_files hidden=false<CR>")
+
+-- ctrl-g to open neogit
 map("n", "<c-g>", "<cmd>Neogit<cr>", { desc = "Git" })
 
--- no whichkey
-map("n", "<leader>", "<nop>", { desc = "Leader" })
-map("n", "<leader><space>", "<cmd>nohl<cr>", { desc = "Clear Highlights" })
-map("n", "<leader>;", "<cmd>Telescope commands<cr>", { desc = "Commands" })
-map("n", "<leader><tab>", "<cmd>blast<cr>", { desc = "File Browser" })
-map("n", "<leader>.", "<cmd>Telescope file_browser<cr>", { desc = "File Browser" })
-map("n", "<leader>?", "<cmd>Telescope help_tags<cr>", { desc = "Help" })
-map("n", "<leader><esc>", "<cmd>nohl<cr>", { desc = "Alpha" })
+-- jj to exit insert mode
+map("i", "jj", "<esc>")
 
-map("n", "<leader>b", "<nop>", { desc = "Buffer" })
-map("n", "<tab>", "<cmd>bnext<cr>", { desc = "Show Buffers" })
-map("n", "<s-tab>", "<cmd>bprevious<cr>", { desc = "Show Buffers" })
-map("n", "<leader><tab>", "<cmd>Telescope buffers<cr>", { desc = "Show Buffers" })
-map("n", "<leader>bd", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
-map("n", "<leader>bn", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-map("n", "<leader>bp", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
--- C
-map("n", "<leader>cpe", "<cmd>Copilot enable<cr>", { desc = "Enable Copilot" })
-map("n", "<leader>cpd", "<cmd>Copilot disable<cr>", { desc = "Disable Copilot" })
--- D
+-- buffer navigation
+map("n", "<tab>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
+map("n", "<s-tab>", "<cmd>bprevious<cr>", { desc = "Previous Buffer" })
+map("n", "<leader><space>", "<cmd>blast<cr>")
+map("n", "<leader><esc>", "<cmd>bdelete<cr>", { desc = "Delete Buffer" })
+map("n", "<leader><tab>", "<cmd>tabnext<cr>", { desc = "Next Tab" })
+map("n", "<leader><s-tab>", "<cmd>tabprevious<cr>", { desc = "Previous Tab" })
+
+-- copilot
+map("n", "<leader>ce", "<cmd>Copilot enable<cr>", { desc = "Copilot Enable" })
+map("n", "<leader>cd", "<cmd>Copilot disable<cr>", { desc = "Copilot Disable" })
+
+-- debugging (dap)
 map("n", "<leader>d", "<nop>", { desc = "Debug" })
 map("n", "<leader>db", "<cmd>lua require('dap').toggle_breakpoint()<cr>", { desc = "Toggle Breakpoint" })
 map("n", "<leader>dc", "<cmd>lua require('dap').continue()<cr>", { desc = "Continue" })
 map("n", "<leader>dd", "<cmd>lua require('dap').step_over()<cr>", { desc = "Step Over" })
--- E
-map("n", "<leader>em", "<cmd>edit ~/.config/nvim/lua/mappings.lua<cr>", { desc = "Edit Mappings" })
+
 -- F
--- J
-map("n", "<leader>j", "<nop>", { desc = "Jump" })
-map("n", "<leader>jd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Jump to Definition" })
-map("n", "<leader>jb", "<C-o>", { desc = "Jump Back" })
-map("n", "<leader>jn", "<C-i>", { desc = "Jump Next" })
-map("n", "<leader>ji", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Jump to Implementation" })
-map("n", "<leader>jr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "Jump to References" })
--- H
+map("n", "<leader>f", "<nop>", { desc = "Find" })
+map("n", "<leader>f?", "<cmd>Telescope help_tags<cr>", { desc = "Find Help" })
+map("n", "<leader>fa", telescope.autocommands, { desc = "Find AutoCommand" })
+map("n", "<leader>fb", "<cmd>Telescope buffers<cr>", { desc = "Find Buffer" })
+map("n", "<leader>fc", telescope.commands, { desc = "Search Commands" })
+map("n", "<leader>fd", telescope.live_grep, { desc = "Grep Current Directory" })
+map(
+	"n",
+	"<leader>ffc",
+	"<cmd>Telescope find_files cwd=~/dotfiles hidden=true theme=ivy<cr>",
+	{ desc = "Find Config File" }
+)
+map(
+	"n",
+	"<leader>ffp",
+	"<cmd>Telescope find_files cwd=~/projects hidden=true theme=ivy<cr>",
+	{ desc = "Find File in Projects" }
+)
+map(
+	"n",
+	"<leader>ffg",
+	"<cmd>Telescope find_files cwd=~/projects hidden=true theme=ivy<cr>",
+	{ desc = "Find File in Projects" }
+)
+map("n", "<leader>fg", telescope.git_files, { desc = "Find File in Git" })
+map("n", "<leader>fh", telescope.command_history, { desc = "Find Previous Command" })
+map("n", "<leader>fj", telescope.jumplist, { desc = "Search Jumps" })
+map("n", "<leader>fk", telescope.keymaps, { desc = "Search Keymaps" })
+map("n", "<leader>fm", telescope.marks, { desc = "Search Marks" })
+
+-- go to
+map("n", "<leader>g", "<nop>", { desc = "Go (to)" })
+map("n", "<leader>gd", "<cmd>lua vim.lsp.buf.definition()<cr>", { desc = "Go to Definition" })
+map("n", "<leader>gb", "<C-o>", { desc = "Go Back a Jump" })
+map("n", "<leader>gn", "<C-i>", { desc = "Go to Next Jump" })
+map("n", "<leader>gi", "<cmd>lua vim.lsp.buf.implementation()<cr>", { desc = "Go to Implementations" })
+map("n", "<leader>gr", "<cmd>lua vim.lsp.buf.references()<cr>", { desc = "Go to References" })
+
+-- help
+map("i", "<c-h>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { desc = "Signature Help" })
 map("n", "<leader>h", "<nop>", { desc = "Help" })
-map("n", "<leader>hv", "<cmd>lua vim.lsp.buf.hover()<cr>", { desc = "Hover" })
-map("n", "<leader>hd", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { desc = "Signature" })
+map("n", "<leader>hh", "<cmd>lua vim.lsp.buf.hover()<cr>", { desc = "Hover Help" })
+map("n", "<leader>hd", "<cmd>lua vim.lsp.buf.signature_help()<cr>", { desc = "Signature Help" })
 -- L
 map("n", "<leader>l", "<nop>", { desc = "Lazy" })
 map("n", "<leader>ls", "<cmd>edit ~/.config/nvim/lua/config/lazy.lua<cr>", { desc = "Edit Lazy Settings" })
 map("n", "<leader>lu", "<cmd>Lazy update<cr>", { desc = "Update" })
 map("n", "<leader>lx", "<cmd>Lazy clean<cr>", { desc = "Clean" })
 -- Q
-map("n", "<leader>q", "<nop>", { desc = "Quit/Close" })
 map("n", "<leader>qq", "<cmd>quitall<cr>", { desc = "Quit" })
 map("n", "<leader>qb", "<cmd>tabclose<cr>", { desc = "Close Tab" })
 -- R
-map("n", "<leader>r", "<nop>", { desc = "Settings" })
 map("n", "<leader>rn", ":IncRename ", { desc = "Rename" })
 -- S
 map("n", "<leader>s", telescope.grep_string, { desc = "Search Under Cursor" })
 -- T
-map("n", "<leader>ta", telescope.autocommands, { desc = "Search AutoCommands" })
-map("n", "<leader>tb", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>", { desc = "File Explorer" })
-map("n", "<leader>tc", telescope.commands, { desc = "Search Commands" })
-map("n", "<leader>td", telescope.live_grep, { desc = "Grep Current Directory" })
-map("n", "<leader>tf", "<cmd>Telescope find_files cwd=~/projects hidden=true theme=ivy<cr>", { desc = "Find Files" })
-map("n", "<leader>tg", telescope.git_files, { desc = "Git Files" })
-map("n", "<leader>th", telescope.command_history, { desc = "Command History" })
-map("n", "<leader>tj", telescope.jumplist, { desc = "Search Jumps" })
-map("n", "<leader>tk", telescope.keymaps, { desc = "Search Keymaps" })
-map("n", "<leader>tm", telescope.marks, { desc = "Search Marks" })
 -- Z
 map("n", "<leader>z", "<cmd>Telescope zoxide list<cr>", { desc = "Change Directory" })
 

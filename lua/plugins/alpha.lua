@@ -1,4 +1,5 @@
 return {
+	enabled = true,
 	"goolord/alpha-nvim",
 	-- dependencies = { 'echasnovski/mini.icons' },
 	dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -19,10 +20,10 @@ return {
 		}
 
 		dashboard.section.buttons.val = {
+			dashboard.button("f", "  > File Browser", ":Yazi<CR>"),
 			dashboard.button("r", "󰥔  > Recent", ":Telescope oldfiles<CR>"),
-			dashboard.button("g", "󰊢  > NeoGit", ":Neogit<CR>"),
 			dashboard.button("k", "󰌌  > Keymaps", ":Telescope keymaps<CR>"),
-			dashboard.button("l", "󱐥  > Lazy Plugins", ":Lazy<cr>"),
+			dashboard.button("l", "󱐥  > Lazy", ":Lazy<cr>"),
 			dashboard.button("q", "󱎘  > Quit", ":qa<CR>"),
 		}
 
